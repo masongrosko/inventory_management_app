@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/requestNotificationHeaderTextView"
+        android:layout_width="359dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="76dp"
+        android:text="Low Stock Alerts"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/notificationAcceptButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="SignUp"
+        app:layout_constraintEnd_toEndOf="@+id/requestNotificationHeaderTextView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/requestNotificationHeaderTextView"
+        app:layout_constraintTop_toBottomOf="@+id/notificationExplanationTextView" />
+
+    <Button
+        android:id="@+id/notificationRejectButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Skip for now"
+        app:layout_constraintEnd_toEndOf="@+id/requestNotificationHeaderTextView"
+        app:layout_constraintStart_toStartOf="@+id/requestNotificationHeaderTextView"
+        app:layout_constraintTop_toBottomOf="@+id/notificationAcceptButton" />
+
+    <TextView
+        android:id="@+id/notificationExplanationTextView"
+        android:layout_width="0dp"
+        android:layout_height="134dp"
+        android:text="Requesting permission to communicate alerts for low or empty stock through SMS messaging."
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/requestNotificationHeaderTextView"
+        app:layout_constraintStart_toStartOf="@+id/requestNotificationHeaderTextView"
+        app:layout_constraintTop_toBottomOf="@+id/requestNotificationHeaderTextView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
