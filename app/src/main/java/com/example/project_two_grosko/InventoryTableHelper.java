@@ -131,7 +131,8 @@ public class InventoryTableHelper extends SQLiteOpenHelper {
                 "InventoryTableHelper",
                 "ItemIdExists: " + itemId + DATABASE_NAME + ": " + TABLE_NAME
         );
-        int exists = 0;
+        int exists = 1;
+        String colName = "DoesUserExist";
         SQLiteDatabase db = this.getWritableDatabase();
         String sqlUserExists = "SELECT CASE WHEN EXISTS(SELECT 1 FROM "
                 + TABLE_NAME
@@ -139,19 +140,16 @@ public class InventoryTableHelper extends SQLiteOpenHelper {
                 + ITEM_ID_COL
                 + " = \""
                 + itemId
-                + "\") THEN 1 ELSE 0 END AS DoesUserExist";
+                + "\") THEN 1 ELSE 0 END AS "
+                + colName;
 
         // Run query
-        try {
-            Cursor c;
-            c = db.rawQuery(sqlUserExists, null);
+        try (Cursor c = db.rawQuery(sqlUserExists, null)) {
             c.moveToFirst();
-            exists = c.getInt(c.getColumnIndex("DoesUserExist"));
-            c.close();
-        } catch(Exception e) {
+            exists = c.getInt(c.getColumnIndex(colName));
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
         return exists;
     }
 

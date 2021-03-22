@@ -55,6 +55,7 @@ public class LoginTableHelper extends SQLiteOpenHelper {
     public int UserLogin(String username, String password) {
         int loginSuccess = 0;
         SQLiteDatabase db = this.getWritableDatabase();
+        String colName = "LoginSuccess";
         String sqlUserPassExists = "SELECT CASE WHEN EXISTS(SELECT 1 FROM "
                 + TABLE_NAME
                 + " WHERE "
@@ -65,16 +66,14 @@ public class LoginTableHelper extends SQLiteOpenHelper {
                 + PASSWORD_COL
                 + " = \""
                 + password
-                + "\") THEN 1 ELSE 0 END AS LoginSuccess";
+                + "\") THEN 1 ELSE 0 END AS "
+                + colName;
 
         // Run query
-        try {
-            Cursor c;
-            c = db.rawQuery(sqlUserPassExists, null);
+        try (Cursor c = db.rawQuery(sqlUserPassExists, null)) {
             c.moveToFirst();
-            loginSuccess = c.getInt(c.getColumnIndex("LoginSuccess"));
-            c.close();
-        } catch(Exception e) {
+            loginSuccess = c.getInt(c.getColumnIndex(colName));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -83,24 +82,23 @@ public class LoginTableHelper extends SQLiteOpenHelper {
 
     // Check if user already exists
     public int UserExists(String username) {
-        int exists = 0;
+        int exists = 1;
         SQLiteDatabase db = this.getWritableDatabase();
+        String colName = "DoesUserExist";
         String sqlUserExists = "SELECT CASE WHEN EXISTS(SELECT 1 FROM "
                 + TABLE_NAME
                 + " WHERE "
                 + USERNAME_COL
                 + " = \""
                 + username
-                + "\") THEN 1 ELSE 0 END AS DoesUserExist";
+                + "\") THEN 1 ELSE 0 END AS "
+                + colName;
 
         // Run query
-        try {
-            Cursor c;
-            c = db.rawQuery(sqlUserExists, null);
+        try (Cursor c = db.rawQuery(sqlUserExists, null)) {
             c.moveToFirst();
-            exists = c.getInt(c.getColumnIndex("DoesUserExist"));
-            c.close();
-        } catch(Exception e) {
+            exists = c.getInt(c.getColumnIndex(colName));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -121,7 +119,7 @@ public class LoginTableHelper extends SQLiteOpenHelper {
         );
 
         // If user does not exists then add the new user/pass combo
-        if (UserExists(username) != 1) {
+        if (UserExists(username) == 0) {
             userCreated = db.insert(TABLE_NAME, null, contentValues);
         }
         return userCreated;
