@@ -61,27 +61,18 @@ public class CustomAdaptor extends RecyclerView.Adapter<CustomAdaptor.MyViewHold
             item_name_txt = itemView.findViewById(R.id.item_name);
             item_stock_txt = itemView.findViewById(R.id.item_stock);
 
-            itemView.findViewById(R.id.increment).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    inventoryTableHelper.incrementStock(item_id_txt.getText().toString());;
-                    notifyDataSetChanged();
-                }
+            itemView.findViewById(R.id.increment).setOnClickListener(v -> {
+                inventoryTableHelper.incrementStock(item_id_txt.getText().toString());
+                notifyDataSetChanged();
             });
 
-            itemView.findViewById(R.id.decrement).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    inventoryTableHelper.decrementStock(item_id_txt.getText().toString());
-                    notifyDataSetChanged();
-                }
+            itemView.findViewById(R.id.decrement).setOnClickListener(v -> {
+                inventoryTableHelper.decrementStock(item_id_txt.getText().toString());
+                notifyDataSetChanged();
             });
-            itemView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    inventoryTableHelper.removeRow(item_id_txt.getText().toString());
-                    notifyDataSetChanged();
-                }
+            itemView.findViewById(R.id.delete).setOnClickListener(v -> {
+                inventoryTableHelper.removeRow(item_id_txt.getText().toString());
+                notifyDataSetChanged();
             });
 
         }

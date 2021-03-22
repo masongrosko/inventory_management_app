@@ -3,10 +3,6 @@ package com.example.project_two_grosko;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,26 +32,23 @@ public class InventoryManagementActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_inventory_management);
-        recyclerView = (RecyclerView) findViewById(R.id.inventoryList);
+        recyclerView = findViewById(R.id.inventoryList);
         addButton = findViewById(R.id.addButton);
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(
-                        InventoryManagementActivity.this,
-                        AddInventoryActivity.class
-                );
-                intent.putExtra("username", username);
-                startActivity(intent);
-            }
+        addButton.setOnClickListener(v -> {
+            Intent intent = new Intent(
+                    InventoryManagementActivity.this,
+                    AddInventoryActivity.class
+            );
+            intent.putExtra("username", username);
+            startActivity(intent);
         });
 
         inventoryTableHelper = new InventoryTableHelper(this);
-        item_ids = new ArrayList<String>();
-        item_names = new ArrayList<String>();
-        item_stocks = new ArrayList<String>();
-        item_prices = new ArrayList<String>();
+        item_ids = new ArrayList<>();
+        item_names = new ArrayList<>();
+        item_stocks = new ArrayList<>();
+        item_prices = new ArrayList<>();
 
         displayData();
 
@@ -66,7 +59,6 @@ public class InventoryManagementActivity extends AppCompatActivity {
 
     private void displayData() {
         Cursor data = inventoryTableHelper.getData();
-        ArrayList<String> listData = new ArrayList<>();
         while(data.moveToNext()) {
             item_ids.add(data.getString(2));
             item_names.add(data.getString(3));
