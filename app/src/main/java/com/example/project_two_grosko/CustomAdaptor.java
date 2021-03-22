@@ -1,9 +1,11 @@
 package com.example.project_two_grosko;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,6 +46,22 @@ public class CustomAdaptor extends RecyclerView.Adapter<CustomAdaptor.MyViewHold
         holder.item_id_txt.setText(String.valueOf(item_ids.get(position)));
         holder.item_name_txt.setText(String.valueOf(item_names.get(position)));
         holder.item_stock_txt.setText(String.valueOf(item_stocks.get(position)));
+
+        holder.increment.setOnClickListener(v -> {
+            inventoryTableHelper.incrementStock(holder.item_id_txt.getText().toString());
+            updateData();
+            notifyDataSetChanged();
+        });
+        holder.decrement.setOnClickListener(v -> {
+            inventoryTableHelper.decrementStock(holder.item_id_txt.getText().toString());
+            updateData();
+            notifyDataSetChanged();
+        });
+        holder.delete.setOnClickListener(v -> {
+            inventoryTableHelper.removeRow(holder.item_id_txt.getText().toString());
+            updateData();
+            notifyDataSetChanged();
+        });
     }
 
     @Override
@@ -51,8 +69,23 @@ public class CustomAdaptor extends RecyclerView.Adapter<CustomAdaptor.MyViewHold
         return item_ids.size();
     }
 
+    private void updateData() {
+        item_ids = new ArrayList<>();
+        item_names = new ArrayList<>();
+        item_stocks = new ArrayList<>();
+        item_prices = new ArrayList<>();
+        Cursor data = inventoryTableHelper.getData();
+        while(data.moveToNext()) {
+            item_ids.add(data.getString(2));
+            item_names.add(data.getString(3));
+            item_stocks.add(data.getString(4));
+            item_prices.add(data.getString(5));
+        }
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView item_id_txt, item_name_txt, item_stock_txt;
+        Button increment, decrement, delete;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,24 +93,9 @@ public class CustomAdaptor extends RecyclerView.Adapter<CustomAdaptor.MyViewHold
             item_id_txt = itemView.findViewById(R.id.item_id);
             item_name_txt = itemView.findViewById(R.id.item_name);
             item_stock_txt = itemView.findViewById(R.id.item_stock);
-
-            itemView.findViewById(R.id.increment).setOnClickListener(v -> {
-                inventoryTableHelper.incrementStock(item_id_txt.getText().toString());
-                notifyDataSetChanged();
-            });
-
-            itemView.findViewById(R.id.decrement).setOnClickListener(v -> {
-                inventoryTableHelper.decrementStock(item_id_txt.getText().toString());
-                notifyDataSetChanged();
-            });
-            itemView.findViewById(R.id.delete).setOnClickListener(v -> {
-                inventoryTableHelper.removeRow(item_id_txt.getText().toString());
-                notifyDataSetChanged();
-            });
-
+            increment = itemView.findViewById(R.id.increment);
+            decrement = itemView.findViewById(R.id.decrement);
+            delete = itemView.findViewById(R.id.delete);
         }
-
-
     }
-
 }
