@@ -47,6 +47,7 @@ public class CustomAdaptor extends RecyclerView.Adapter<CustomAdaptor.MyViewHold
         holder.item_name_txt.setText(String.valueOf(item_names.get(position)));
         holder.item_stock_txt.setText(String.valueOf(item_stocks.get(position)));
 
+        // OnClickListeners
         holder.increment.setOnClickListener(v -> {
             inventoryTableHelper.incrementStock(holder.item_id_txt.getText().toString());
             updateData();
@@ -69,6 +70,7 @@ public class CustomAdaptor extends RecyclerView.Adapter<CustomAdaptor.MyViewHold
         return item_ids.size();
     }
 
+    // Update all the values within the database
     private void updateData() {
         item_ids = new ArrayList<>();
         item_names = new ArrayList<>();
