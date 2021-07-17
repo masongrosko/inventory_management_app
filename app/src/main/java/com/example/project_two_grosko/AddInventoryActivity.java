@@ -3,8 +3,8 @@ package com.example.project_two_grosko;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,30 +29,26 @@ public class AddInventoryActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_add_inventory);
 
-        acceptButton = (FloatingActionButton) findViewById(R.id.acceptProductAdditionFloatingButton);
+        acceptButton = findViewById(R.id.acceptProductAdditionFloatingButton);
 
-        name = (TextView) findViewById(R.id.productNameTextEdit);
-        id = (TextView) findViewById(R.id.productIDTextEdit);
-        price = (TextView) findViewById(R.id.productPriceTextEdit);
-        stock = (TextView) findViewById(R.id.productQuantityTextEdit);
+        name = findViewById(R.id.productNameTextEdit);
+        id = findViewById(R.id.productIDTextEdit);
+        price = findViewById(R.id.productPriceTextEdit);
+        stock = findViewById(R.id.productQuantityTextEdit);
 
         inventoryTableHelper = new InventoryTableHelper(this);
 
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (id.length() != 0) {
-                    id_string = id.getText().toString();
-                }
-                if (name.length() != 0) {
-                    name_string = name.getText().toString();
-                }
-                if (stock.length() != 0) {
-                    stock_string = stock.getText().toString();
-                }
-                if (price.length() != 0) {
-                    price_string = price.getText().toString();
-                }
+        acceptButton.setOnClickListener(v -> {
+            if (
+                (id.length() != 0)
+                && (name.length() != 0)
+                && (stock.length() != 0)
+                && (price.length() != 0)
+            ) {
+                id_string = id.getText().toString();
+                name_string = name.getText().toString();
+                stock_string = stock.getText().toString();
+                price_string = price.getText().toString();
                 Log.d(
                         "AddInventoryActivity",
                         "onClick: " + username + id_string + name_string + stock_string + price_string
@@ -71,6 +67,9 @@ public class AddInventoryActivity extends AppCompatActivity {
                 );
                 inventoryManagementIntent.putExtra("username", username);
                 startActivity(inventoryManagementIntent);
+            }
+            else {
+                Toast.makeText(this, "All rows must contain data", Toast.LENGTH_SHORT).show();
             }
         });
 

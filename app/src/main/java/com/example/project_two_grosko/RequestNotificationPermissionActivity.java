@@ -2,7 +2,6 @@ package com.example.project_two_grosko;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -26,35 +25,29 @@ public class RequestNotificationPermissionActivity extends AppCompatActivity {
 
         // Grab values from content view
         setContentView(R.layout.activity_request_notifaction_permission);
-        acceptButton = (Button) findViewById(R.id.notificationAcceptButton);
-        rejectButton = (Button) findViewById(R.id.notificationRejectButton);
+        acceptButton = findViewById(R.id.notificationAcceptButton);
+        rejectButton = findViewById(R.id.notificationRejectButton);
 
         // Initialize database
         notificationTableHelper = new NotificationTableHelper(this);
 
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateNotificationSettings(username, 1);
-                Intent inventoryManagementIntent = new Intent(
-                        RequestNotificationPermissionActivity.this,
-                        InventoryManagementActivity.class
-                );
-                inventoryManagementIntent.putExtra("username", username);
-                startActivity(inventoryManagementIntent);
-            }
+        acceptButton.setOnClickListener(v -> {
+            updateNotificationSettings(username, 1);
+            Intent inventoryManagementIntent = new Intent(
+                    RequestNotificationPermissionActivity.this,
+                    InventoryManagementActivity.class
+            );
+            inventoryManagementIntent.putExtra("username", username);
+            startActivity(inventoryManagementIntent);
         });
-        rejectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateNotificationSettings(username, -1);
-                Intent inventoryManagementIntent = new Intent(
-                        RequestNotificationPermissionActivity.this,
-                        InventoryManagementActivity.class
-                );
-                inventoryManagementIntent.putExtra("username", username);
-                startActivity(inventoryManagementIntent);
-            }
+        rejectButton.setOnClickListener(v -> {
+            updateNotificationSettings(username, -1);
+            Intent inventoryManagementIntent = new Intent(
+                    RequestNotificationPermissionActivity.this,
+                    InventoryManagementActivity.class
+            );
+            inventoryManagementIntent.putExtra("username", username);
+            startActivity(inventoryManagementIntent);
         });
     }
 

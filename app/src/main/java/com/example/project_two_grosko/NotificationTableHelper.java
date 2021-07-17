@@ -119,7 +119,8 @@ public class NotificationTableHelper extends SQLiteOpenHelper {
                 "NotificationTableHelper",
                 "UserExists: " + username + DATABASE_NAME + ": " + TABLE_NAME
         );
-        int exists = 0;
+        int exists = 1;
+        String colName = "DoesUserExist";
         SQLiteDatabase db = this.getWritableDatabase();
         String sqlUserExists = "SELECT CASE WHEN EXISTS(SELECT 1 FROM "
                 + TABLE_NAME
@@ -127,16 +128,14 @@ public class NotificationTableHelper extends SQLiteOpenHelper {
                 + USERNAME_COL
                 + " = \""
                 + username
-                + "\") THEN 1 ELSE 0 END AS DoesUserExist";
+                + "\") THEN 1 ELSE 0 END AS "
+                + colName;
 
         // Run query
-        try {
-            Cursor c;
-            c = db.rawQuery(sqlUserExists, null);
+        try (Cursor c = db.rawQuery(sqlUserExists, null)) {
             c.moveToFirst();
-            exists = c.getInt(c.getColumnIndex("DoesUserExist"));
-            c.close();
-        } catch(Exception e) {
+            exists = c.getInt(c.getColumnIndex(colName));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -155,7 +154,7 @@ public class NotificationTableHelper extends SQLiteOpenHelper {
         }
         int notificationPermissions = 0;
         SQLiteDatabase db = this.getWritableDatabase();
-        String sqlUserExists = "SELECT "
+        String getNotificationPermissions = "SELECT "
                 + NOTIFICATION_COL
                 + " FROM "
                 + TABLE_NAME
@@ -166,13 +165,10 @@ public class NotificationTableHelper extends SQLiteOpenHelper {
                 + "\"";
 
         // Run query
-        try {
-            Cursor c;
-            c = db.rawQuery(sqlUserExists, null);
+        try (Cursor c = db.rawQuery(getNotificationPermissions, null)) {
             c.moveToFirst();
             notificationPermissions = c.getInt(c.getColumnIndex(NOTIFICATION_COL));
-            c.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
